@@ -7,14 +7,8 @@ import openai
 from openai import OpenAI
 import base64
 
-def safe_json_serialize(data):
-    try:
-        return json.dumps(data, default=str)  # Converts to JSON, with a default handler for non-serializable types
-    except TypeError as e:
-        print(f"Error in JSON serialization: {e}")
-        return "{}"
-
-def save_data_as_json(file_name):
+def load_data_from_json(file_name):
+    """Load data from a JSON file."""
     try:
         if os.path.exists(file_name):
             with open(file_name, "r") as file:
@@ -25,15 +19,28 @@ def save_data_as_json(file_name):
         print(f"Error in loading JSON data: {e}")
         return []
 
+def save_data_to_json(data, file_name):
+    """Save data to a JSON file."""
+    try:
+        with open(file_name, "w") as file:
+            json.dump(data, file, indent=12)
+    except Exception as e:
+        print(f"Error in saving JSON data: {e}")
+
+def add_user_data(new_data, file_name="user_data.json"):
+    existing_data = load_data_from_json(file_name)
+    existing_data.append(new_data)
+    save_data_to_json(existing_data, file_name)
+
 
 def call_gbt3(prompt):
-    openai.api_key = os.environ['OPEN_API_KEY']
-    client=OpenAI()
+    openai.api_key = os.environ['OPENAI_API_KEY'] # Corrected environment variable
+    client = OpenAI()
 
-    response = client.completinons.create(
-        model="gpt-3.5-turbo-instruct",  
+    response = client.completions.create(
+        model="gpt-3.5-turbo-instruct",  # Corrected attribute name
         prompt=prompt,  
-        max_tokens = 1000 
+        max_tokens=1000 
     )
 
     return response.choices[0].text
@@ -86,15 +93,14 @@ def main():
 
     if 'user_data.json' not in st.session_state:
         file_name = "user_data.json"
-        st.session_state.user_data_json = save_data_as_json(file_name)
+        st.session_state.user_data_json = load_data_from_json(file_name)
 
 
 
     st.title("User Information Form")
     file_name = "user_data.json"
-    st.session_state.user_data_json = str(save_data_as_json(file_name))
-    user_data = save_data_as_json(file_name)
-
+    st.session_state.user_data_json = str(load_data_from_json(file_name))
+    user_data = load_data_from_json(file_name)
     # st.json(user_data)
 
 
@@ -135,13 +141,12 @@ def main():
 
         
         st.write(f"All fields filled: {all_fields_filled}")
-        submitted = st.form_submit_button("Submit", disabled=not all_fields_filled)
-
+        submitted = st.form_submit_button("Submit")
         if submitted:
             encoded_photo = base64.b64encode(photo.read()).decode() if photo else None
             encoded_horoscope_chart = base64.b64encode(horoscope_chart.read()).decode() if horoscope_chart else None
 
-            user_data = {
+            new_user_data = {
                     "name": name,
                     "age":age,
                     "gender": gender,
@@ -155,8 +160,8 @@ def main():
                     "horoscope_chart": encoded_horoscope_chart,
                     "star":star 
                 }
-            user_data = st.session_state.user_data_json
-            save_data(user_data)
+            add_user_data(new_user_data, file_name)
+            save_data(new_user_data)
             st.success("Data Saved Successfully!")
 
             st.write(f"Hello{name}")

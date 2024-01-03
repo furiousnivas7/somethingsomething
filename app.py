@@ -140,7 +140,7 @@ def main():
         ])
 
         
-        st.write(f"All fields filled: {all_fields_filled}")
+        # st.write(f"All fields filled: {all_fields_filled}")
         submitted = st.form_submit_button("Submit")
         if submitted:
             encoded_photo = base64.b64encode(photo.read()).decode() if photo else None

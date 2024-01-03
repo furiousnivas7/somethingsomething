@@ -66,20 +66,9 @@ def clear_form_fields():
 def match_profiles(user_prompt, user_data_json):
     matched_profiles = []
     
-    try:
-        user_data = json.loads(user_data_json)
-    except json.JSONDecodeError:
-        # st.warning("Invalid JSON data. Please fill in the form and submit it first.")
-        return matched_profiles
-
     for profile in user_data:
-        if (
-            user_prompt.lower() in profile["interest"].lower()
-            or user_prompt.lower() in profile["religion"].lower()
-            or user_prompt.lower() in profile["Planetary_position"].lower()
-            or user_prompt.lower() in profile["star"].lower()
-        ):
-            if user_data["gender"] != profile["gender"]:
+        if any(user_prompt.lower() in profile.get(key, "").lower() for key in ["interest", "religion", "Planetary_position", "star"]):
+            if profile["gender"] != user_data[-1]["gender"]:  # Compare with the last entry's gender
                 matched_profiles.append(profile)
 
     return matched_profiles
@@ -165,6 +154,7 @@ def main():
             st.success("Data Saved Successfully!")
 
             st.write(f"Hello{name}")
+            updated_user_data = load_data_from_json(file_name)
             matched_profiles = match_profiles(interest, st.session_state.user_data_json)
             if matched_profiles:
                 st.subheader("Matching Profiles:")

@@ -63,7 +63,7 @@ def clear_form_fields():
     for key in list(st.session_state.keys()):
         del st.session_state[key]
 
-def match_profiles(user_prompt, user_data_json):
+def match_profiles(user_prompt, user_data):
     matched_profiles = []
     
     for profile in user_data:

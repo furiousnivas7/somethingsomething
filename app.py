@@ -65,12 +65,10 @@ def clear_form_fields():
 
 def match_profiles(user_prompt, user_data):
     matched_profiles = []
-    
     for profile in user_data:
-        if any(user_prompt.lower() in profile.get(key, "").lower() for key in ["interest", "religion", "Planetary_position", "star"]):
+        if any(user_prompt.lower() in (profile.get(key, "") or "").lower() for key in ["interest", "religion", "Planetary_position", "star"]):
             if profile["gender"] != user_data[-1]["gender"]:  # Compare with the last entry's gender
                 matched_profiles.append(profile)
-
     return matched_profiles
 
 # Streamlit app
@@ -155,7 +153,7 @@ def main():
 
             st.write(f"Hello{name}")
             updated_user_data = load_data_from_json(file_name)
-            matched_profiles = match_profiles(interest, st.session_state.user_data_json)
+            matched_profiles = match_profiles(interest, updated_user_data)
             if matched_profiles:
                 st.subheader("Matching Profiles:")
                 for profile in matched_profiles:

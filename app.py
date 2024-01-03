@@ -66,11 +66,11 @@ def clear_form_fields():
 def match_profiles(user_prompt, user_data_json):
     matched_profiles = []
     
-    try:
-        user_data = json.loads(user_data_json)
-    except json.JSONDecodeError:
-        st.warning("Invalid JSON data. Please fill in the form and submit it first.")
-        return matched_profiles
+    # try:
+    #     user_data = json.loads(user_data_json)
+    # except json.JSONDecodeError:
+    #     st.warning("Invalid JSON data. Please fill in the form and submit it first.")
+    #     return matched_profiles
 
     for profile in user_data:
         if (

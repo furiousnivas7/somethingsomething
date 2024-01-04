@@ -176,8 +176,14 @@ def main():
                 st.subheader("Matching Profiles:")
                 for match in matches:
                     percentage = calculate_matching_percentage(current_user, match)
-                    st.write(f"Name: {match['name']}, Match Percentage: {percentage}%","Explanation: {explanation}",)
-                    
+                    match_details = (
+                        f"Name: {match['name']}, "
+                        f"DOB: {match.get('dob', 'Not available')}, "
+                        f"Work: {match.get('work', 'Not available')}, "
+                        f"Salary: {match.get('salary', 'Not available')}, "
+                        f"Match Percentage: {percentage}%"
+                    )
+                    st.write(match_details)
                     # Call GPT-3 to explain the matching
                     explanation_prompt = f"Explain why two people with star {current_user['star']} and planetary position {current_user['Planetary_position']} are {percentage}% match, considering they have different genders."
                     explanation = call_gbt3(explanation_prompt)

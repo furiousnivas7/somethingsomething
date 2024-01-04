@@ -74,6 +74,19 @@ def match_profiles(user_prompt, user_data):
             if profile["gender"] != user_data[-1]["gender"]:  # Compare with the last entry's gender
                 matched_profiles.append(profile)
     return matched_profiles
+def find_matching_profiles(user_data, current_user):
+    matches = []
+    for profile in user_data:
+        if profile["star"] == current_user["star"] and profile["Planetary_position"] == current_user["Planetary_position"] and profile["gender"] != current_user["gender"]:
+            matches.append(profile)
+    return matches
+
+# Function to calculate matching percentage
+def calculate_matching_percentage(current_user, match):
+    matching_criteria = 2  # Same star and planetary position
+    matched_criteria = sum([current_user[key] == match[key] for key in ["star", "Planetary_position"]])
+    return (matched_criteria / matching_criteria) * 100
+
 
 # Streamlit app
 def main():
@@ -155,21 +168,20 @@ def main():
             save_data(new_user_data)
             st.success("Data Saved Successfully!")
 
-            # Call GPT-3 with the user prompt
-            full_prompt = f"Find matching profiles for: {star and  planetary_position and horoscope_chart  }"
-            gpt3_response = call_gbt3(full_prompt)
-            st.write("GPT-3 Response:", gpt3_response)
+            user_data = load_data_from_json("user_data.json")
+            current_user = user_data[-1]  # Assuming the last user is the current user
+            matches = find_matching_profiles(user_data, current_user)
 
-            st.write(f"Hello{name}")
-            updated_user_data = load_data_from_json(file_name)
-            matched_profiles = match_profiles(interest, updated_user_data)
-            if matched_profiles:
+            if matches:
                 st.subheader("Matching Profiles:")
-                for profile in matched_profiles:
-                    st.write(f"Name: {profile['name']}")
-                    st.write(f"Age: {profile['age']}")
-                    st.write(f"Gender: {profile['gender']}")
-                    # Add other profile information as needed
+                for match in matches:
+                    percentage = calculate_matching_percentage(current_user, match)
+                    st.write(f"Name: {match['name']}, Match Percentage: {percentage}%")
+                    
+                    # Call GPT-3 to explain the matching
+                    explanation_prompt = f"Explain why two people with star {current_user['star']} and planetary position {current_user['Planetary_position']} are {percentage}% match, considering they have different genders."
+                    explanation = call_gbt3(explanation_prompt)
+                    st.write(f"Explanation: {explanation}")
             else:
                 st.info("No matching profiles found.")
         elif submitted:

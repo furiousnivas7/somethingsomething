@@ -33,17 +33,21 @@ def add_user_data(new_data, file_name="user_data.json"):
     save_data_to_json(existing_data, file_name)
 
 
+
 def call_gbt3(prompt):
-    openai.api_key = os.environ.get('OPENAI_API_KEY') # Corrected environment variable
-    client = OpenAI()
+    # Ensure the OPENAI_API_KEY is set in your environment variables
+    openai.api_key = os.environ.get('OPENAI_API_KEY')
 
-    response = client.completions.create(
-        model="gpt-3.5-turbo-instruct",  # Corrected attribute name
-        prompt=prompt,  
-        max_tokens=1000 
-    )
-
-    return response.choices[0].text
+    try:
+        response = openai.Completion.create(
+            engine="text-davinci-003",  # You can change the engine as per your requirement
+            prompt=prompt,  
+            max_tokens=1000 
+        )
+        return response.choices[0].text
+    except Exception as e:
+        print(f"Error calling GPT-3: {e}")
+        return None
 # Function to save data to a JSON file
 def save_data(data, filename="user_data.json"):
     try:

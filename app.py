@@ -156,7 +156,7 @@ def main():
             st.success("Data Saved Successfully!")
 
             # Call GPT-3 with the user prompt
-            full_prompt = f"Find matching profiles for: {interest}"
+            full_prompt = f"Find matching profiles for: {star and  planetary_position and horoscope_chart  }"
             gpt3_response = call_gbt3(full_prompt)
             st.write("GPT-3 Response:", gpt3_response)
 

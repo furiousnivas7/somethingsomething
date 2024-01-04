@@ -34,7 +34,7 @@ def add_user_data(new_data, file_name="user_data.json"):
 
 
 def call_gbt3(prompt):
-    openai.api_key = os.environ['OPENAI_API_KEY'] # Corrected environment variable
+    openai.api_key = os.environ.get('OPENAI_API_KEY') # Corrected environment variable
     client = OpenAI()
 
     response = client.completions.create(

@@ -176,7 +176,7 @@ def main():
                 st.subheader("Matching Profiles:")
                 for match in matches:
                     percentage = calculate_matching_percentage(current_user, match)
-                    st.write(f"Name: {match['name']}, Match Percentage: {percentage}%")
+                    st.write(f"Name: {match['name']}, Match Percentage: {percentage}%","Explanation: {explanation}",f"photo:{match['photo']}")
                     
                     # Call GPT-3 to explain the matching
                     explanation_prompt = f"Explain why two people with star {current_user['star']} and planetary position {current_user['Planetary_position']} are {percentage}% match, considering they have different genders."
@@ -204,22 +204,22 @@ def main():
         file_name="user_data.json",
         mime="application/json"
         )
-    user_prompt = st.text_input("Enter your prompt here")  
-    button = st.button("Send Data to GPT-3.5") 
+    # user_prompt = st.text_input("Enter your prompt here")  
+    # button = st.button("Send Data to GPT-3.5") 
 
-    if button:
-        full_prompt = str(st.session_state.user_data_json) + user_prompt  
-        gpt3_response = call_gbt3(full_prompt)  
+    # if button:
+    #     full_prompt = str(st.session_state.user_data_json) + user_prompt  
+    #     gpt3_response = call_gbt3(full_prompt)  
     
-        user_data = {
-                "interest": user_prompt,
-                "gpt3_response": gpt3_response,
-                "photo": st.file_uploader("Upload a photo").read()
-            }
+    #     user_data = {
+    #             "interest": user_prompt,
+    #             "gpt3_response": gpt3_response,
+    #             "photo": st.file_uploader("Upload a photo").read()
+    #         }
 
-        save_data(user_data)
-        st.write("OpenAI Response:", gpt3_response)
-        st.success("Data Saved Successfully!") 
+    #     save_data(user_data)
+    #     st.write("OpenAI Response:", gpt3_response)
+    #     st.success("Data Saved Successfully!") 
 
 
 

@@ -66,7 +66,7 @@ def clear_form_fields():
 def match_profiles(user_prompt, user_data):
     matched_profiles = []
     for profile in user_data:
-        if any(user_prompt.lower() in (profile.get(key, "") or "").lower() for key in ["interest", "religion", "Planetary_position", "star"]):
+        if any(user_prompt.lower() in (profile.get(key, "") or "").lower() for key in ["interest", "religion", "star"]):
             if profile["gender"] != user_data[-1]["gender"]:  # Compare with the last entry's gender
                 matched_profiles.append(profile)
     return matched_profiles
@@ -129,9 +129,9 @@ def main():
         
         # st.write(f"All fields filled: {all_fields_filled}")
         submitted = st.form_submit_button("Submit")
-        if submitted:
-            encoded_photo = base64.b64encode(photo.read()).decode() if photo else None
-            encoded_horoscope_chart = base64.b64encode(horoscope_chart.read()).decode() if horoscope_chart else None
+        if submitted and all_fields_filled:
+            encoded_photo = base64.b64encode(photo.getvalue()).decode() if photo else None
+            encoded_horoscope_chart = base64.b64encode(horoscope_chart.getvalue()).decode() if horoscope_chart else None
 
             new_user_data = {
                     "name": name,
@@ -151,6 +151,11 @@ def main():
             save_data(new_user_data)
             st.success("Data Saved Successfully!")
 
+            # Call GPT-3 with the user prompt
+            full_prompt = f"Find matching profiles for: {interest}"
+            gpt3_response = call_gbt3(full_prompt)
+            st.write("GPT-3 Response:", gpt3_response)
+
             st.write(f"Hello{name}")
             updated_user_data = load_data_from_json(file_name)
             matched_profiles = match_profiles(interest, updated_user_data)
@@ -163,8 +168,8 @@ def main():
                     # Add other profile information as needed
             else:
                 st.info("No matching profiles found.")
-        else:
-             st.warning("Please fill in all required fields.")
+        elif submitted:
+                st.warning("Please fill in all required fields.")
     # clear_form_fields()
     # st.rerun() 
     # if isinstance(user_data, list):

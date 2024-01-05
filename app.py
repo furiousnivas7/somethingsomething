@@ -35,16 +35,16 @@ def add_user_data(new_data, file_name="user_data.json"):
 
 
 def call_gpt3(prompt):
-    api_key = st.secrets['OPENAI_API_KEY']
+    api_key = os.environ['OPENAI_API_KEY']
     if not api_key:
         st.write("OpenAI API key is not set.")
         return None
 
-    openai.api_key = api_key
-
+    # openai.api_key = api_key
+    client = OpenAI()
     try:
-        response = openai.Completion.create(
-            engine="text-davinci-003",  # Choose the appropriate engine
+        response = client.Completion.create(
+             model="gpt-3.5-turbo-instruct",  # Choose the appropriate engine
             prompt=prompt,
             max_tokens=1000
         )
@@ -227,13 +227,13 @@ def main():
         full_prompt = str(st.session_state.user_data_json) + user_prompt  
         gpt3_response = call_gpt3(full_prompt)  
     
-        user_data = {
-                "interest": user_prompt,
-                "gpt3_response": gpt3_response,
-                # "photo": st.file_uploader("Upload a photo").read()
-            }
+        # user_data = {
+        #         "interest": user_prompt,
+        #         "gpt3_response": gpt3_response,
+        #         # "photo": st.file_uploader("Upload a photo").read()
+        #     }
 
-        save_data(user_data)
+        # save_data(user_data)
         st.write("OpenAI Response:", gpt3_response)
         st.success("Data Saved Successfully!") 
 

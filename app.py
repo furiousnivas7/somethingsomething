@@ -40,12 +40,11 @@ def call_gpt3(prompt):
         st.error("OpenAI API key is not set.")
         return None
 
-    openai.api_key = api_key  
-    client = openai.GPT3()    # Change to openai.GPT3() if using GPT-3.5
+    openai.api_key = api_key  # Set the API key
 
     try:
-        response = client.Completion.create(
-            model="text-davinci-003",  # or "text-davinci-turbo" based on your preference
+        response = openai.Completion.create(
+            engine="text-davinci-003",  # Choose the appropriate engine
             prompt=prompt,
             max_tokens=1000
         )

@@ -37,20 +37,20 @@ def add_user_data(new_data, file_name="user_data.json"):
 def call_gpt3(prompt):
     api_key = os.environ.get('OPENAI_API_KEY')
     if not api_key:
-        st.error("OpenAI API key is not set.")
+        print("OpenAI API key is not set.")
         return None
 
     openai.api_key = api_key
 
     try:
-        response = openai.ChatCompletion.create(
-            engine="text-davinci-003",
+        response = openai.Completion.create(
+            engine="text-davinci-003",  # Choose the appropriate engine
             prompt=prompt,
             max_tokens=1000
         )
         return response.choices[0].text
     except Exception as e:
-        st.error(f"Error calling GPT-3: {e}")
+        print(f"Error calling GPT-3: {e}")
         return None
 # Function to save data to a JSON file
 def save_data(data, filename="user_data.json"):

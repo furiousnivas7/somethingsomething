@@ -43,8 +43,8 @@ def call_gpt3(prompt):
     openai.api_key = api_key
 
     try:
-        response = openai.Completion.create(
-            engine="text-davinci-003",
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
             prompt=prompt,
             max_tokens=1000
         )

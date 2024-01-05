@@ -34,19 +34,23 @@ def add_user_data(new_data, file_name="user_data.json"):
 
 
 
-def call_gbt3(prompt):
-    # Ensure the OPENAI_API_KEY is set in your environment variables
-    openai.api_key = os.environ.get('OPENAI_API_KEY')
+def call_gpt3(prompt):
+    api_key = os.environ.get('OPENAI_API_KEY')
+    if not api_key:
+        st.error("OpenAI API key is not set.")
+        return None
+
+    openai.api_key = api_key
 
     try:
         response = openai.Completion.create(
-            engine="text-davinci-003",  # You can change the engine as per your requirement
-            prompt=prompt,  
-            max_tokens=1000 
+            engine="text-davinci-003",
+            prompt=prompt,
+            max_tokens=1000
         )
         return response.choices[0].text
     except Exception as e:
-        print(f"Error calling GPT-3: {e}")
+        st.error(f"Error calling GPT-3: {e}")
         return None
 # Function to save data to a JSON file
 def save_data(data, filename="user_data.json"):
@@ -186,7 +190,7 @@ def main():
                     st.write(match_details)
                     # Call GPT-3 to explain the matching
                     explanation_prompt = f"Explain why two people with star {current_user['star']} and planetary position {current_user['Planetary_position']} are {percentage}% match, considering they have different genders."
-                    explanation = call_gbt3(explanation_prompt)
+                    explanation = call_gpt3(explanation_prompt)
                     st.write(f"Explanation: {explanation}")
             else:
                 st.info("No matching profiles found.")

@@ -44,7 +44,7 @@ def call_gpt3(prompt):
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            engine="text-davinci-003",
             prompt=prompt,
             max_tokens=1000
         )

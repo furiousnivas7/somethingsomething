@@ -235,7 +235,7 @@ def main():
 
         # save_data(user_data)
         st.write("OpenAI Response:", gpt3_response)
-        st.success("Data Saved Successfully!") 
+    #    st.success("Data Saved Successfully!") 
 
 
 

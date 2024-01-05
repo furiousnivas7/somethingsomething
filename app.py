@@ -224,7 +224,7 @@ def main():
         user_data = {
                 "interest": user_prompt,
                 "gpt3_response": gpt3_response,
-                "photo": st.file_uploader("Upload a photo").read()
+                # "photo": st.file_uploader("Upload a photo").read()
             }
 
         save_data(user_data)

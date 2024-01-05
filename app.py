@@ -35,9 +35,9 @@ def add_user_data(new_data, file_name="user_data.json"):
 
 
 def call_gpt3(prompt):
-    api_key = os.environ.get('OPENAI_API_KEY')
+    api_key = st.secrets['OPENAI_API_KEY']
     if not api_key:
-        print("OpenAI API key is not set.")
+        st.write("OpenAI API key is not set.")
         return None
 
     openai.api_key = api_key
@@ -214,22 +214,22 @@ def main():
         file_name="user_data.json",
         mime="application/json"
         )
-    # user_prompt = st.text_input("Enter your prompt here")  
-    # button = st.button("Send Data to GPT-3.5") 
+    user_prompt = st.text_input("Enter your prompt here")  
+    button = st.button("Send Data to GPT-3.5") 
 
-    # if button:
-    #     full_prompt = str(st.session_state.user_data_json) + user_prompt  
-    #     gpt3_response = call_gbt3(full_prompt)  
+    if button:
+        full_prompt = str(st.session_state.user_data_json) + user_prompt  
+        gpt3_response = call_gpt3(full_prompt)  
     
-    #     user_data = {
-    #             "interest": user_prompt,
-    #             "gpt3_response": gpt3_response,
-    #             "photo": st.file_uploader("Upload a photo").read()
-    #         }
+        user_data = {
+                "interest": user_prompt,
+                "gpt3_response": gpt3_response,
+                "photo": st.file_uploader("Upload a photo").read()
+            }
 
-    #     save_data(user_data)
-    #     st.write("OpenAI Response:", gpt3_response)
-    #     st.success("Data Saved Successfully!") 
+        save_data(user_data)
+        st.write("OpenAI Response:", gpt3_response)
+        st.success("Data Saved Successfully!") 
 
 
 

@@ -80,11 +80,17 @@ def match_profiles(user_prompt, user_data):
     return matched_profiles
 def find_matching_profiles(user_data, current_user):
     matches = []
-    for profile in user_data:
-        if profile["star"] == current_user["star"] and profile["Planetary_position"] == current_user["Planetary_position"] and profile["gender"] != current_user["gender"]:
-            matches.append(profile)
+    # Ensure user_data is a list and current_user is a dictionary with required keys
+    if isinstance(user_data, list) and isinstance(current_user, dict) and \
+       "star" in current_user and "Planetary_position" in current_user and "gender" in current_user:
+        for profile in user_data:
+            # Check if the necessary keys exist in the profile
+            if all(key in profile for key in ["star", "Planetary_position", "gender"]):
+                if profile["star"] == current_user["star"] and \
+                   profile["Planetary_position"] == current_user["Planetary_position"] and \
+                   profile["gender"] != current_user["gender"]:
+                    matches.append(profile)
     return matches
-
 # Function to calculate matching percentage
 def calculate_matching_percentage(current_user, match):
     matching_criteria = 2  # Same star and planetary position

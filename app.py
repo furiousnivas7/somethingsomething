@@ -107,7 +107,7 @@ def main():
 
     if 'user_data.json' not in st.session_state:
         file_name = "user_data.json"
-        st.session_state.user_data_json = load_data_from_json(file_name)
+        st.session_state.user_data_json = ""
 
 
 

@@ -94,14 +94,7 @@ def calculate_matching_percentage(current_user, match):
 
 # Streamlit app
 def main():
-    if 'full_prompt' not in st.session_state:
-        st.session_state.full_prompt=""
-    if 'gpt3_response' not in st.session_state:
-        st.session_state.gpt3_response=""
-
-    if 'user_data.json' not in st.session_state:
-        file_name = "user_data.json"
-        st.session_state.user_data_json = ""
+   
 
 
 
@@ -214,6 +207,15 @@ def main():
         file_name="user_data.json",
         mime="application/json"
         )
+    
+    if 'full_prompt' not in st.session_state:
+        st.session_state.full_prompt=""
+    if 'gpt3_response' not in st.session_state:
+        st.session_state.gpt3_response=""
+
+    if 'user_data.json' not in st.session_state:
+        file_name = "user_data.json"
+        st.session_state.user_data_json = ""
     user_prompt = st.text_input("Enter your prompt here")  
     button = st.button("Send Data to GPT-3.5") 
 

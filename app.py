@@ -35,16 +35,20 @@ def add_user_data(new_data, file_name="user_data.json"):
 
 
 def call_gpt3(prompt):
-    openai.api_key = os.environ['OPENAI_API_KEY']  # Environment variable-l irunthu API key get pannuthu
-    client = OpenAI()  # OpenAI client create pannuthu
+    openai.api_key = os.environ.get('OPENAI_API_KEY')
+    client = OpenAI()
 
-    response = client.completions.create(
-        model="gpt-3.5-turbo-instruct",  # GPT-3.5 model specify pannuthu
-        prompt=prompt,  # User kudutha prompt pass pannuthu
-        max_tokens = 1000  # Maximum number of tokens (words) specify pannuthu
-    )
-   
-    return response.choices[0].text 
+    try:
+        response = client.completions.create(
+            model="gpt-3.5-turbo-instruct",
+            prompt=prompt,
+            max_tokens=1000
+        )
+        return response.choices[0].text
+    except openai.error.OpenAIError as e:
+        # Log the error details for debugging
+        print(f"OpenAI API error: {e}")
+        return "An error occurred while processing your request."
 
 # Function to save data to a JSON file
 def save_data(data, filename="user_data.json"):

@@ -223,7 +223,7 @@ def main():
     if current_user:
         user_prompt = (f"Based on the following user_data: Name: {current_user['name']}, Age: {current_user['age']}, "
                     f"Sex: {current_user['gender']}, Job Field: {current_user['work']}, "
-                    f"find potential matches who are interested in {current_user['interest']}, {current_user['star']}.")
+                    f"find potential matches who are interested in  {current_user['star']}.")
 
         button = st.button("Send Data to GPT-3.5")
 

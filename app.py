@@ -228,25 +228,22 @@ def main():
 
     
     st.session_state.user_data_json = str(load_data_from_json(file_name))
-    user_data = load_data_from_json(file_name)
-
-    # Assuming current_user is the last user in user_data
-    # Assuming current_user is the last user in user_data
+    user_data = load_data_from_json("user_data.json")
     current_user = user_data[-1] if user_data else None
 
     if current_user:
-        # Construct a more specific prompt
-        user_prompt = (f"Find potential matches for a person named {current_user['name']} who is interested in {current_user['interest']}, "
-                    f"belongs to the star sign {current_user['star']}, and works in the field of {current_user['work']}.")
+        # Constructing a detailed prompt for GPT-3
+        user_prompt = f"Find potential matches from the following user profiles based on similar interests and star sign. Current user details: Name: {current_user['name']}, Age: {current_user['age']}, Star: {current_user['star']}, Interest: {current_user['interest']}. User profiles: {user_data}"
 
-        button = st.button("Send Data to GPT-3.5")
+        button = st.button("Find Matches with GPT-3")
 
         if button:
-            full_prompt= str( st.session_state.user_data_json)+user_prompt
-            # print(f"Prompt length: {len(full_prompt)} tokens")  # Add this before the API call
-
-            gpt3_response = call_gpt3(full_prompt)
-            st.write("OpenAI Response:", gpt3_response)
+            # Ensure the prompt is within the token limit
+            if len(user_prompt) < 4097:
+                gpt3_response = call_gpt3(user_prompt)
+                st.write("GPT-3 Matching Profiles:", gpt3_response)
+            else:
+                st.error("Prompt is too long for GPT-3.")
     else:
         st.error("No user data available.")
 

@@ -182,8 +182,8 @@ def main():
                     )
                     st.write(match_details)
                     # Call GPT-3 to explain the matching
-                    explanation_prompt = f"Explain why two people with star {current_user['star']} and planetary position {current_user['Planetary_position']} are {percentage}% match, considering they have different genders."
-                    explanation = call_gpt3(explanation_prompt)
+                    user_prompt = f"Explain why two people with star {current_user['star']} and planetary position {current_user['Planetary_position']} are {percentage}% match, considering they have different genders."
+                    explanation = call_gpt3(user_prompt)
                     st.write(f"Explanation: {explanation}")
             else:
                 st.info("No matching profiles found.")

@@ -209,8 +209,7 @@ def main():
         file_name="user_data.json",
         mime="application/json"
         )
-    print(f"Prompt length: {len(full_prompt)} tokens")  # Add this before the API call
-
+    
     if 'full_prompt' not in st.session_state:
         st.session_state.full_prompt=""
     if 'gpt3_response' not in st.session_state:
@@ -238,6 +237,8 @@ def main():
 
         if button:
             full_prompt= str( st.session_state.user_data_json)+user_prompt
+            print(f"Prompt length: {len(full_prompt)} tokens")  # Add this before the API call
+
             gpt3_response = call_gpt3(full_prompt)
             st.write("OpenAI Response:", gpt3_response)
     else:

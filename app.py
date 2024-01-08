@@ -216,7 +216,7 @@ def main():
     if 'user_data.json' not in st.session_state:
         file_name = "user_data.json"
         st.session_state.user_data_json = ""
-    user_prompt = st.text_input(f"Explain why two people with star {current_user['star']} and planetary position {current_user['Planetary_position']} are {percentage}% match, considering they have different genders.")  
+    user_prompt = f"Explain why two people with star {current_user['star']} and planetary position {current_user['Planetary_position']} are {percentage}% match, considering they have different genders."
     button = st.button("Send Data to GPT-3.5") 
 
     if button:

@@ -216,8 +216,8 @@ def main():
     if 'user_data.json' not in st.session_state:
         file_name = "user_data.json"
         st.session_state.user_data_json = load_data_from_json(file_name)
-    user_prompt = (f"Based on the following user profile: Name: {user_data['name']}, Age: {user_data['age']}, "
-              f"Sex: {user_data['gender']}, Job Field: {user_data['work']}, Hobbies: {', '.join(user_data.get('hobbies', []))}, "
+    user_prompt = (f"Based on the following user_data: Name: {user_data['name']}, Age: {user_data['age']}, "
+              f"Sex: {user_data['gender']}, Job Field: {user_data['work']}, "
               f"find potential matches who are interested in {interest},{star}.")
     button = st.button("Send Data to GPT-3.5") 
 

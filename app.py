@@ -8,16 +8,22 @@ from openai import OpenAI
 import base64
 
 def load_data_from_json(file_name):
-    """Load data from a JSON file."""
+    """Load data from a JSON file and remove image data."""
     try:
         if os.path.exists(file_name):
             with open(file_name, "r") as file:
-                return json.load(file)
+                data = json.load(file)
+                # Removing image data from each entry
+                for entry in data:
+                    entry.pop('photo', None)  # Remove 'photo' key if exists
+                    entry.pop('horoscope_chart', None)  # Remove 'horoscope_chart' key if exists
+                return data
         else:
             return []
     except Exception as e:
         print(f"Error in loading JSON data: {e}")
         return []
+
 
 def save_data_to_json(data, file_name):
     """Save data to a JSON file."""
@@ -237,7 +243,7 @@ def main():
 
         if button:
             full_prompt= str( st.session_state.user_data_json)+user_prompt
-            print(f"Prompt length: {len(full_prompt)} tokens")  # Add this before the API call
+            # print(f"Prompt length: {len(full_prompt)} tokens")  # Add this before the API call
 
             gpt3_response = call_gpt3(full_prompt)
             st.write("OpenAI Response:", gpt3_response)

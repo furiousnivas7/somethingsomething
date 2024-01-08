@@ -209,7 +209,8 @@ def main():
         file_name="user_data.json",
         mime="application/json"
         )
-    
+    print(f"Prompt length: {len(full_prompt)} tokens")  # Add this before the API call
+
     if 'full_prompt' not in st.session_state:
         st.session_state.full_prompt=""
     if 'gpt3_response' not in st.session_state:

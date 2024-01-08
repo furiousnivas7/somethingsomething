@@ -103,7 +103,7 @@ def main():
 
 
     st.title("User Information Form")
-    
+    file_name = "user_data.json"
     # st.json(user_data)
 
 
@@ -220,7 +220,7 @@ def main():
         st.session_state.user_data_json = ""
 
 
-    file_name = "user_data.json"
+    
     st.session_state.user_data_json = str(load_data_from_json(file_name))
     user_data = load_data_from_json(file_name)
 

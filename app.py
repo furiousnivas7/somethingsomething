@@ -216,25 +216,25 @@ def main():
     if 'user_data.json' not in st.session_state:
         file_name = "user_data.json"
         st.session_state.user_data_json = load_data_from_json(file_name)
-    user_prompt = (f"Based on the following user_data: Name: {user_data[-1]['name']}, Age: {user_data[-1]['age']}, "
-               f"Sex: {user_data[-1]['gender']}, Job Field: {user_data[-1]['work']}, "
-               f"find potential matches who are interested in {user_data[-1]['interest']},{user_data[-1]['star']}.")
 
-    button = st.button("Send Data to GPT-3.5") 
+    # Assuming current_user is the last user in user_data
+    current_user = user_data[-1] if user_data else None
 
-    if button:
-        full_prompt = str(st.session_state.user_data_json) + user_prompt  
-        gpt3_response = call_gpt3(full_prompt)  
-    
-        # user_data = {
-        #         "interest": user_prompt,
-        #         "gpt3_response": gpt3_response,
-        #         # "photo": st.file_uploader("Upload a photo").read()
-        #     }
+    if current_user:
+        user_prompt = (f"Based on the following user_data: Name: {current_user['name']}, Age: {current_user['age']}, "
+                    f"Sex: {current_user['gender']}, Job Field: {current_user['work']}, "
+                    f"find potential matches who are interested in {current_user['interest']}, {current_user['star']}.")
 
-        # save_data(user_data)
-        st.write("OpenAI Response:", gpt3_response)
-    #    st.success("Data Saved Successfully!") 
+        button = st.button("Send Data to GPT-3.5")
+
+        if button:
+            # Ensure the prompt is concise and within the token limit
+            full_prompt = user_prompt  # Adjust this part to reduce the prompt size
+            gpt3_response = call_gpt3(full_prompt)
+
+            st.write("OpenAI Response:", gpt3_response)
+    else:
+        st.error("No user data available.")
 
 
 

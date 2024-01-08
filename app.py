@@ -211,7 +211,7 @@ def main():
     if 'full_prompt' not in st.session_state:
         st.session_state.full_prompt=""
     if 'gpt3_response' not in st.session_state:
-        st.session_state.gpt3_response=""
+        st.session_state.gpt3_response=load_data_from_json(file_name)
 
     if 'user_data.json' not in st.session_state:
         file_name = "user_data.json"

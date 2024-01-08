@@ -182,8 +182,8 @@ def main():
                     )
                     st.write(match_details)
                     # Call GPT-3 to explain the matching
-                    user_prompt = f"Explain why two people with star {current_user['star']} and planetary position {current_user['Planetary_position']} are {percentage}% match, considering they have different genders."
-                    explanation = call_gpt3(user_prompt)
+                    explanation_prompt = f"Explain why two people with star {current_user['star']} and planetary position {current_user['Planetary_position']} are {percentage}% match, considering they have different genders."
+                    explanation = call_gpt3(explanation_prompt)
                     st.write(f"Explanation: {explanation}")
             else:
                 st.info("No matching profiles found.")
@@ -216,7 +216,9 @@ def main():
     if 'user_data.json' not in st.session_state:
         file_name = "user_data.json"
         st.session_state.user_data_json = load_data_from_json(file_name)
-    user_prompt = f"Explain why two people with star {current_user['star']} and planetary position {current_user['Planetary_position']} , considering they have different genders."
+    user_prompt = (f"Based on the following user profile: Name: {user_data['name']}, Age: {user_data['age']}, "
+              f"Sex: {user_data['gender']}, Job Field: {user_data['work']}, Hobbies: {', '.join(user_data.get('hobbies', []))}, "
+              f"find potential matches who are interested in {interest},{star}.")
     button = st.button("Send Data to GPT-3.5") 
 
     if button:

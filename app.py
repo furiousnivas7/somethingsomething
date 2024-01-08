@@ -99,9 +99,7 @@ def main():
 
 
     st.title("User Information Form")
-    file_name = "user_data.json"
-    st.session_state.user_data_json = str(load_data_from_json(file_name))
-    user_data = load_data_from_json(file_name)
+    
     # st.json(user_data)
 
 
@@ -215,7 +213,12 @@ def main():
 
     if 'user_data.json' not in st.session_state:
         file_name = "user_data.json"
-        st.session_state.user_data_json = load_data_from_json(file_name)
+        st.session_state.user_data_json = ""
+
+
+    file_name = "user_data.json"
+    st.session_state.user_data_json = str(load_data_from_json(file_name))
+    user_data = load_data_from_json(file_name)
 
     # Assuming current_user is the last user in user_data
     # Assuming current_user is the last user in user_data
@@ -229,8 +232,8 @@ def main():
         button = st.button("Send Data to GPT-3.5")
 
         if button:
-            # Send the refined prompt
-            gpt3_response = call_gpt3(user_prompt)
+            full_prompt= str( st.session_state.user_data_json)+user_prompt
+            gpt3_response = call_gpt3(full_prompt)
             st.write("OpenAI Response:", gpt3_response)
     else:
         st.error("No user data available.")
